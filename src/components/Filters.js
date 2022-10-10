@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Form } from "react-bootstrap";
-import { CLEAR_FILTER, FILTER_BY_DELIVERY, FILTER_BY_RATING, FILTER_BY_STOCK, SORT_BY_PRICE } from "../context/constant";
+import { CLEAR_FILTER, FILTER_BY_RATING, FILTER_BY_STOCK, SORT_BY_PRICE } from "../context/constant";
 import { cartState } from "../context/Context";
 import Rating from "./Rating";
 
-
 const Filters = () => {
-    const { productDispatch, productState: { byStock, byFastDelivery, sort, byRating, searchQuery } } = cartState();
-
-    // make state for rating
-
-    // const [byRating, setRate] = useState(4)
+    const { productDispatch, productState: { byStock, sort, byRating } } = cartState();
 
     return (
         <div className="filters">
@@ -54,19 +49,9 @@ const Filters = () => {
                     checked={byStock}
                 />
             </span>
+            
             <span>
-                <Form.Check
-                    inline
-                    label="Fast Delivery Only"
-                    name="group1"
-                    type="checkbox"
-                    id={`inline-4`}
-                    onChange={() => productDispatch({ type: FILTER_BY_DELIVERY })}
-                    checked={byFastDelivery}
-                />
-            </span>
-            <span>
-                <label style={{ paddingRight: 10 }}>Rating: </label>
+                <label style={{ paddingRight: 10 }}>BY Rating: </label>
                 <Rating
                     rating={byRating}
                     changeRating={(rating) => productDispatch({

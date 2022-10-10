@@ -16,6 +16,17 @@
     justify-content: space-around;
 }
 
+.productImage {
+    width: auto;
+    max-height: 240px;
+}
+
+.productDetail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .filters {
     background-color: #343a40;
     color: white;

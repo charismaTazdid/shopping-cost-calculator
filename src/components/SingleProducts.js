@@ -5,7 +5,7 @@ import { cartState } from '../context/Context';
 import Rating from './Rating'
 
 const SingleProducts = ({ product }) => {
-
+console.log(product)
     const { state: { cart }, dispatch } = cartState();
 
     const addToCart = (pd) => {
@@ -19,25 +19,31 @@ const SingleProducts = ({ product }) => {
     return (
         <div className='products'>
             <Card>
-                <Card.Img src={product.image} variant="top" alt={product.name} />
-                <Card.Body>
-                    <Card.Title>{product.name} </Card.Title>
+                <Card.Img src={product.images[0]} variant="top" alt={product.title} className="productImage" />
+                <Card.Body className='productDetail'>
+                    <Card.Title>{product.title} || Brand : {product.brand}</Card.Title>
+                 
+                    <p style={{ paddingBottom: 10 }}> {product.description} </p>
                     <Card.Subtitle style={{ paddingBottom: 10 }}>
-                        <span> $ {product.price.split(".")[0]} only </span>
+                        <span style={{ paddingBottom: '12px' }}> Price:  <b>$</b> {product.price} only </span>
                         {
-                            product.fastDelivery ? (<div> Fast Delivery </div>) : (<div> 4 Days Delivery</div>)
+                            product.fastDelivery ? (<div> Fast Delivery </div>) : (<div style={{margin: '10px 0'}}> 4 Days Delivery</div>)
                         }
-                        <Rating rating={product.ratings} changeRating={() => { }} />
+                        <Rating rating={Math.round(product.rating)}
+                            changeRating={() => { }}
+                            style={{ color: "orange" }}
+                        />
+
                     </Card.Subtitle>
 
                     {
                         cart.some((p) => p.id === product.id) ? (<Button onClick={() => removeFromCart(product)} variant='danger'> Remove From Cart </Button>)
                             :
-                            (<Button disabled={!product.inStock}
+                            (<Button disabled={!product.stock}
                                 variant='success'
                                 onClick={() => addToCart(product)}
                             >
-                                {!product.inStock ? " Out Of Stock " : "Add To Cart"}
+                                {!product.stock ? " Out Of Stock " : "Add To Cart"}
                             </Button>)
                     }
 
@@ -56,6 +62,3 @@ export default SingleProducts;
 
 
 
-    // fetch('https://fakestoreapi.com/products')
-    // .then(res => res.json())
-    // .then(data => console.log(data))

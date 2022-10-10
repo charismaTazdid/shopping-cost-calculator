@@ -1,4 +1,3 @@
-import { type } from '@testing-library/user-event/dist/type';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, ListGroup, Row, Image } from 'react-bootstrap';
 import { AiFillDelete } from 'react-icons/ai';
@@ -28,17 +27,21 @@ const Cart = () => {
                             <ListGroup.Item key={item.id}>
                                 <Row>
                                     <Col md={2}>
-                                        <Image src={item.image} alt={item.name} fluid rounded />
+                                        <Image src={item.images[0]} alt={item.title} fluid rounded />
 
                                     </Col>
                                     <Col md={2}>
-                                        <span>{item.name}</span>
+                                        <span> <b>{item.title}</b> </span>
                                     </Col>
                                     <Col md={2}>
                                         <span> $ {item.price}</span>
                                     </Col>
                                     <Col md={2}>
-                                        <Rating rating={item.ratings} />
+                                        <Rating
+                                            rating={Math.round(item.rating)}
+                                            changeRating={() => { }}
+                                            style={{ color: 'orange' }}
+                                        />
                                     </Col>
                                     <Col md={2}>
                                         <Form.Control as={'select'} value={item.qty}
@@ -49,7 +52,7 @@ const Cart = () => {
                                         >
 
                                             {
-                                                [...Array(item.inStock).keys()].map((x) => (
+                                                [...Array(item.stock).keys()].map((x) => (
                                                     <option key={x + 1}> {x + 1} </option>
                                                 ))
                                             }
@@ -70,10 +73,27 @@ const Cart = () => {
                     }
                 </ListGroup>
             </div>
-            <div className='filters summary'>
-                <span className='title'> Subtotal: {cart.length}</span>
-                <span style={{ fontWeight: 700, fontSize: 20 }}> Total: $ {total} </span>
-                <Button type='button' disabled={cart.length === 0}> Procced To Checkout </Button>
+            <div className='filters summary' style={{backgroundColor: "#1c2023"}}>
+                <span className='title'> Total Item: {cart.length}</span>
+
+                {
+                    cart.map((pd) => (
+                        <span className='cartItem' key={pd.id}>
+                            <img className='cartItemImg' src={pd.images[0]} alt={pd.title} />
+
+                            <div className='cartItemDetail'>
+                                <span> <b> {pd.title} </b></span>
+                                <span> $ {pd.price}  x {pd.qty} = {pd.price * pd.qty} </span>
+
+                            </div>
+                            <AiFillDelete color='red' fontSize='20px' style={{ cursor: 'pointer' }} onClick={() => dispatch({ type: REMOVE_FROM_CART, payload: pd })} />
+
+                        </span>
+                    ))
+                }
+
+                <span style={{ fontWeight: 700, fontSize: 20, textAlign: 'center', color: 'white' }}> Total: $ {total} </span>
+                <Button variant='success' type='button' disabled={cart.length === 0}> Procced To Checkout </Button>
             </div>
         </div>
     );

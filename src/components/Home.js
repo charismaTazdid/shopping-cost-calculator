@@ -6,9 +6,8 @@ import './styles.css';
 
 const Home = () => {
 
-    const { state, productState: { byStock, byFastDelivery, sort, byRating, searchQuery } } = cartState();
+    const { state, productState: { stock, sort, byRating, searchQuery } } = cartState();
     const products = state.products;
-
 
     const transformProducts = () => {
         let sortProducts = products;
@@ -17,25 +16,24 @@ const Home = () => {
                 sort === 'lowToHigh' ? a.price - b.price : b.price - a.price
             ))
         }
-        
-        if (!byStock) {
-            sortProducts = sortProducts.filter((pd) => pd.inStock);
+
+        if (!stock) {
+            sortProducts = sortProducts.filter((pd) => pd.stock);
         }
-        if (byFastDelivery) {
-            sortProducts = sortProducts.filter((pd) => pd.fastDelivery);
-        }
+
         if (byRating) {
-            sortProducts = sortProducts.filter((pd) => pd.ratings >= byRating)
+            sortProducts = sortProducts.filter((pd) => (Math.round(pd.rating)) >= byRating)
         }
         if (searchQuery) {
             sortProducts = sortProducts.filter((pd) => {
-                pd.name.toLowerCase().includes(searchQuery)
+                return pd.title.toLowerCase().includes(searchQuery) || pd.brand.toLowerCase().includes(searchQuery)
             })
+
         }
         return sortProducts;
     }
 
-    // console.log(products)
+  
     return (
         <div className='home'>
             <Filters />
