@@ -2,7 +2,7 @@
 
 Shopping Cost Calculator App is a simple react.js Application. Manage the state with react context API and useReducer Hook.
 
-### Built With
+### Build With
 
 react.js, react-bootstrap, axios, react-reducer, context-api, faker etc.
 
